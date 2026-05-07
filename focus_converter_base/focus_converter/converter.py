@@ -164,31 +164,31 @@ class FocusConverter:
             # process data based on conversion type
             command_class = command_classes.get(plan.conversion_type)
             if (
-                command_class.categorty(self) == "column"
-                or command_class.categorty(self) == "datetime"
+                command_class.category(self) == "column"
+                or command_class.category(self) == "datetime"
             ):
                 command_class().execute(
                     plan, column_alias, self.__column_validator__, column_exprs
                 )
-            elif command_class.categorty(self) == "sql":
+            elif command_class.category(self) == "sql":
                 command_class().execute(
                     plan, column_alias, self.__column_validator__, sql_queries
                 )
-            elif command_class.categorty(self) == "lookup":
+            elif command_class.category(self) == "lookup":
                 command_class().execute(
                     plan,
                     column_alias,
                     self.__column_validator__,
                     self.lookup_reference_args,
                 )
-            elif command_class.categorty(self) == "deferred":
+            elif command_class.category(self) == "deferred":
                 command_class().execute(
                     plan,
                     column_alias,
                     self.__column_validator__,
                     self.__deferred_column_plans__,
                 )
-            elif command_class.categorty(self) == "string":
+            elif command_class.category(self) == "string":
                 command_class().execute(
                     plan,
                     column_alias,

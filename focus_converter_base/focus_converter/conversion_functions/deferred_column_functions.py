@@ -67,7 +67,7 @@ class DeferredColumnFunctions:
                     dtype = pl.Int64
                 else:
                     raise RuntimeError(
-                        f"data_type: {conversion_arg.data_types} not implemented"
+                        f"data_type: {conversion_arg.data_type} not implemented"
                     )
 
                 lf = lf.with_columns(

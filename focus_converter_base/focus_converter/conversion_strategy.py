@@ -16,7 +16,7 @@ class Command(ABC):
         pass
 
     @abstractmethod
-    def categorty(self):
+    def category(self):
         pass
 
 
@@ -31,7 +31,7 @@ class ConvertTimezoneCommand(Command):
             )
         )
 
-    def categorty(self):
+    def category(self):
         return "datetime"
 
 
@@ -45,7 +45,7 @@ class DateTimeConversionCommand(Command):
             )
         )
 
-    def categorty(self):
+    def category(self):
         return "datetime"
 
 
@@ -59,7 +59,7 @@ class DateTimeAssignUTCCommand(Command):
             )
         )
 
-    def categorty(self):
+    def category(self):
         return "datetime"
 
 
@@ -73,7 +73,7 @@ class DateTimeMonthStartCommand(Command):
             )
         )
 
-    def categorty(self):
+    def category(self):
         return "datetime"
 
 
@@ -87,7 +87,7 @@ class DateTimeMonthEndCommand(Command):
             )
         )
 
-    def categorty(self):
+    def category(self):
         return "datetime"
 
 
@@ -101,7 +101,7 @@ class DateTimeParseDateTimeCommand(Command):
             )
         )
 
-    def categorty(self):
+    def category(self):
         return "datetime"
 
 
@@ -118,7 +118,7 @@ class ColumnRenameCommand(Command):
             )
         )
 
-    def categorty(self):
+    def category(self):
         return "column"
 
 
@@ -132,7 +132,7 @@ class ColumnUnnestCommand(Command):
             )
         )
 
-    def categorty(self):
+    def category(self):
         return "column"
 
 
@@ -146,7 +146,7 @@ class ColumnMapValuesCommand(Command):
             )
         )
 
-    def categorty(self):
+    def category(self):
         return "column"
 
 
@@ -160,7 +160,7 @@ class ColumnAssignStaticCommand(Command):
             )
         )
 
-    def categorty(self):
+    def category(self):
         return "column"
 
 
@@ -177,7 +177,7 @@ class SQLEvalQueryCommand(Command):
             )
         )
 
-    def categorty(self):
+    def category(self):
         return "sql"
 
 
@@ -191,7 +191,7 @@ class SQLEvalConditionsCommand(Command):
             )
         )
 
-    def categorty(self):
+    def category(self):
         return "sql"
 
 
@@ -206,7 +206,7 @@ class LookupMapValuesCommand(Command):
             )
         )
 
-    def categorty(self):
+    def category(self):
         return "lookup"
 
 
@@ -219,7 +219,7 @@ class DeferredColumnPlanApplyDefaultColumnCommand(Command):
             column_validator=column_validator,
         )
 
-    def categorty(self):
+    def category(self):
         return "deferred"
 
 
@@ -230,7 +230,7 @@ class DeferredColumnMapDTypePlanCommand(Command):
             column_validator=column_validator,
         )
 
-    def categorty(self):
+    def category(self):
         return "deferred"
 
 
@@ -244,5 +244,5 @@ class StringFunctionsCommand(Command):
             )
         )
 
-    def categorty(self):
+    def category(self):
         return "string"
