@@ -67,7 +67,8 @@ class ColumnFunctions:
                 predicate = predicate.list.max()
             else:
                 raise RuntimeError(
-                    f"Unknown aggregation_operation type: {conversion_args.aggregation_operation}"
+                    f"Unknown aggregation_operation type: {conversion_args.aggregation_operation} "
+                    f"for column: {plan.column}, plan: {plan.config_file_name}"
                 )
         else:
             raise RuntimeError(
