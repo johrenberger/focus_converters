@@ -19,17 +19,26 @@ class StringFunctions:
         column_expr = pl.col(plan.column)
 
         for step in conversion_args.steps:
-            if step == "lower":
-                column_expr = column_expr.str.to_lowercase()
-            elif step == "upper":
-                column_expr = column_expr.str.to_uppercase()
-            elif step == "title":
-                column_expr = column_expr.str.to_titlecase()
+            if isinstance(step, str):
+                step_lower = step.lower()
+                if step_lower == "lower":
+                    column_expr = column_expr.str.to_lowercase()
+                elif step_lower == "upper":
+                    column_expr = column_expr.str.to_uppercase()
+                elif step_lower == "title":
+                    column_expr = column_expr.str.to_titlecase()
+                else:
+                    raise ValueError(
+                        f"Invalid step '{step}' in conversion plan {plan}. "
+                        f"Valid string transforms: 'lower', 'upper', 'title'."
+                    )
             elif isinstance(step, StringSplitArgument):
                 column_expr = column_expr.str.split(step.split_by)
-                if step.index:
+                if step.index is not None:
                     column_expr = column_expr.list.get(index=step.index)
             else:
-                raise ValueError(f"Invalid step {step} in conversion plan {plan}")
+                raise ValueError(
+                    f"Invalid step type {type(step)} in conversion plan {plan}."
+                )
 
         return column_expr.alias(column_alias)
