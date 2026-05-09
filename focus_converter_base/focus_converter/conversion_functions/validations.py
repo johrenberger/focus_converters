@@ -16,14 +16,24 @@ SINK_COLUMN_NAME = "FOCUS_DATASET"
 STATIC_VALUE_COLUMN = "STATIC_VALUE"
 
 
-def mm(graph):
-    # generates UML using mermaid's public api
+def mm(graph, allow_external=True):
+    # generates UML using mermaid
     # TODO: Find a robust local graph draw
-
+    
     graphbytes = graph.encode("ascii")
     base64_bytes = base64.b64encode(graphbytes)
     base64_string = base64_bytes.decode("ascii")
-    return requests.get(f"https://mermaid.ink/img/{base64_string}").content
+    
+    if not allow_external:
+        # Return a placeholder when external calls are disabled
+        # (e.g., enterprise environments with data exfiltration policies)
+        return None
+    
+    try:
+        return requests.get(f"https://mermaid.ink/img/{base64_string}").content
+    except requests.RequestException:
+        # Network errors should not break the conversion process
+        return None
 
 
 class ColumnValidator:
@@ -172,6 +182,11 @@ class ColumnValidator:
         graph_uml.seek(0)
         return graph_uml.read()
 
-    def generate_uml_graph(self):
+    def generate_uml_graph(self, allow_external=True):
+        """
+        Using networkx, generate a mermaid compatible UML graph of the conversion plan.
+        
+        :param allow_external: If False, skips external API call to mermaid.ink
+        """
         mermaid_graph = self.generate_mermaid_uml()
-        return mm(mermaid_graph)
+        return mm(mermaid_graph, allow_external=allow_external)
