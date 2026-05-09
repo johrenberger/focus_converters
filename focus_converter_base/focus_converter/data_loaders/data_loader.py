@@ -72,10 +72,24 @@ class DataLoader:
         with open(self.__data_path__, "r") as f:
             content = f.read()
 
+        # Handle empty files
+        if not content or not content.strip():
+            raise ValueError(f"CSV file is empty: {self.__data_path__}")
+
         # Split the CSV content into sections
         sections = content.split("\n\n")
 
-        # Process the last section separately. Which contains the main content. In the case of a a traditional CSV this is what gets returned
+        # Handle single-section (standard) CSV case
+        if len(sections) == 1:
+            yield pl.read_csv(
+                io.StringIO(sections[0]),
+                try_parse_dates=False,
+                ignore_errors=True,
+                truncate_ragged_lines=True,
+            ).lazy()
+            return
+
+        # Process the last section separately. Which contains the main content. In the case of a traditional CSV this is what gets returned
         df_last_section = pl.read_csv(
             io.StringIO(sections[len(sections) - 1]),
             try_parse_dates=False,
@@ -85,6 +99,10 @@ class DataLoader:
 
         # For each section before the final section. Duplicate the rows and concatenate the data to the main content from the last section
         for i in range(0, len(sections) - 1):
+            # Skip empty sections
+            if not sections[i].strip():
+                continue
+
             # Parse the new section
             df_current_section = pl.read_csv(
                 io.StringIO(sections[i]),
@@ -92,6 +110,11 @@ class DataLoader:
                 ignore_errors=True,
                 truncate_ragged_lines=True,
             )
+
+            # Skip if no rows to duplicate
+            if df_last_section.height == 0 or df_current_section.height == 0:
+                continue
+
             # duplicate the data
             df_current_section_repeated = df_current_section.select(
                 pl.all().repeat_by(df_last_section.height).explode()
