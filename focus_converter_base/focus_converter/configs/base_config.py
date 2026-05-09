@@ -25,6 +25,13 @@ class SQLConditionConversionArgs(BaseModel):
     conditions: List[str]
     default_value: Any
 
+    @field_validator("conditions")
+    @classmethod
+    def validate_conditions(cls, v):
+        if not v:
+            raise ValueError("conditions cannot be empty")
+        return v
+
 
 class LookupConversionArgs(BaseModel):
     reference_path_in_package: bool = True

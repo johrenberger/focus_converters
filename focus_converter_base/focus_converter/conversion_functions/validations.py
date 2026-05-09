@@ -132,7 +132,8 @@ class ColumnValidator:
         columns_missing = sorted(set(source_columns) - set(lf.columns))
         if columns_missing:
             raise ValueError(
-                f"Column(s) '{', '.join(columns_missing)}' not found in data"
+                f"Column(s) '{', '.join(columns_missing)}' not found in data. "
+                f"Missing columns prevent graph validation. Check conversion config."
             )
 
     def validate_graph_is_connected(self):
