@@ -8,8 +8,11 @@ from focus_converter.configs.base_config import (
 )
 from focus_converter.conversion_functions.validations import ColumnValidator
 
-# used in sql queries
-# TODO: Make it configurable according to context if needed
+# Used in sql queries
+# NOTE: Currently hardcoded. To make configurable:
+# 1. Add TABLE_NAME arg to conversion plan
+# 2. Pass via converter context
+# 3. Support per-plan table name override
 DEFAULT_SQL_TABLE_NAME = "cost_data"
 
 
